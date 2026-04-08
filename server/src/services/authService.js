@@ -2,7 +2,6 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 
 export const registerUser = async (data) => {
-  console.log(data);
   const { name, email, password, confirm_password } = data;
 
   // STEP 1: validate the input data
