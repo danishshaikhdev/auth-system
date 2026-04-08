@@ -11,6 +11,16 @@ export const registerUser = async (data) => {
     throw new Error("All fields are required");
   }
 
+  // - check if email is valid
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error("Invalid email format");
+  }
+
+  // - check if password is at least 6 characters long
+  if (password.length < 6) {
+    throw new Error("Password must be at least 6 characters long");
+  }
+
   // - check if password and confirm_password match
   if (password !== confirm_password) {
     throw new Error("Passwords do not match");
