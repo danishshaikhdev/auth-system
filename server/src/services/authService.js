@@ -5,8 +5,7 @@ import jwt from "jsonwebtoken";
 /**
  * takes name, email, password, confirm_password from request body
  * @description: register user
- * @param {*} req 
- * @param {*} res 
+ * @param {Object} data - Object containing name, email, password, and confirm_password
  * @returns {json}
  */
 export const registerUser = async (data) => {
@@ -62,8 +61,7 @@ export const registerUser = async (data) => {
 /**
  * takes email and password from request body
  * @description: login user
- * @param {*} req 
- * @param {*} res 
+ * @param {Object} data - Object containing email and password
  * @returns {json}
  */
 export const loginUser = async (data) => {
@@ -90,6 +88,9 @@ export const loginUser = async (data) => {
     throw new Error("Password is incorrect");
   }
   // STEP 4: generate JWT token
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET not configured");
+  }
   const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
     expiresIn: "1h",
   });
