@@ -80,12 +80,12 @@ export const loginUser = async (data) => {
   // STEP 2: find user in db
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error("User not found");
+    throw new Error("Invalid email or password");
   }
   // STEP 3: compare password using bcrypt.compare
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    throw new Error("Password is incorrect");
+    throw new Error("Invalid email or password");
   }
   // STEP 4: generate JWT token
   if (!process.env.JWT_SECRET) {
