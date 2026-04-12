@@ -40,3 +40,10 @@ export const login = async (req, res) => {
     });
   }
 };
+
+export const getMe = async (req, res) => {
+  res.status(200).json({
+    success: true,
+    data: req.user,
+  })
+}
