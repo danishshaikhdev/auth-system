@@ -14,12 +14,7 @@ app.use(express.json());
 app.use('/api/auth', router);
 
 // define dummy route just to test the server
-app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "Hello World!",
-  });
-});
+app.get("/", (req, res) => res.json({ message: "Auth System is running..." }));
 
 // STEP 4: define port
 const PORT = process.env.PORT || 3000;

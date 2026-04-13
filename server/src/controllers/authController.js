@@ -1,4 +1,9 @@
-import { loginUser, registerUser } from "../services/authService.js";
+import {
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  registerUser,
+} from "../services/authService.js";
 
 export const register = async (req, res) => {
   try {
@@ -26,6 +31,13 @@ export const login = async (req, res) => {
     // call loginUser service
     const data = await loginUser(req.body);
 
+    // set cookie
+    res.cookie("refreshToken", data.refreshTokem, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
+
     // send 200 status code (200 means ok)
     res.status(200).json({
       success: true,
@@ -45,5 +57,39 @@ export const getMe = async (req, res) => {
   res.status(200).json({
     success: true,
     data: req.user,
-  })
-}
+  });
+};
+
+export const refreshToken = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    const data = await refreshAccessToken(refreshToken);
+
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    const data = await logoutUser(req.user.id);
+
+    res.status(200).json({
+      success: true,
+      message: data.message,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
