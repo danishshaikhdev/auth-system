@@ -32,7 +32,7 @@ export const protect = async (req, res, next) => {
     // send 401 error (401 means unauthorized)
     res.status(401).json({
       success: false,
-      message: `Not Authorized, ${error.message}`,
+      message: 'Not Authorized, token is invalid or expired',
     });
   }
 };
