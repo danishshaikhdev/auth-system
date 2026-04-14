@@ -130,7 +130,7 @@ export const refreshAccessToken = async (token) => {
 
     // STEP 3: check if the user exists in db (decoded.id is user id)
     // - check if the refresh token matches the one in db
-    const user = await User.findById(decoded.id);
+    const user = await User.findById(decoded.userId);
 
     // - if user does not exist or refresh token does not match
     if (!user || user.refreshToken !== token) {

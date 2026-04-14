@@ -32,9 +32,9 @@ export const login = async (req, res) => {
     const data = await loginUser(req.body);
 
     // set cookie
-    res.cookie("refreshToken", data.refreshTokem, {
+    res.cookie("refreshToken", data.refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: "strict",
     });
 
@@ -62,7 +62,7 @@ export const getMe = async (req, res) => {
 
 export const refreshToken = async (req, res) => {
   try {
-    const { refreshToken } = req.body;
+    const { refreshToken } = req.cookies;
 
     const data = await refreshAccessToken(refreshToken);
 
@@ -72,7 +72,7 @@ export const refreshToken = async (req, res) => {
     });
   } catch (error) {
     res.status(401).json({
-      success: false,
+      success: false, // false for development purpose since true means cookie only goes to HTTPS
       message: error.message,
     });
   }

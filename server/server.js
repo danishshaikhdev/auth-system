@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./src/config/db.js";
 import router from "./src/routes/authRoutes.js";
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 // STEP 1: create express app
@@ -11,6 +12,7 @@ const app = express();
 // STEP 2: use middleware to handle cors and json parsing
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use('/api/auth', router);
 
 // define dummy route just to test the server
