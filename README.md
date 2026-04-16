@@ -30,6 +30,8 @@ Designed using clean architecture (Controller → Service → Model) to ensure m
 
 Client → Routes → Middleware → Controller → Service → DB
 
+![alt text](<System Architecture.png>)
+
 ---
 
 ## 🛠️ Tech Stack
