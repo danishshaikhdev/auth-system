@@ -1,98 +1,195 @@
-# 🔐 Auth System
+# 🔐 Production-Ready Authentication System
 
-A full-stack authentication system built while learning backend development.
-This project demonstrates how a client interacts with a server to handle user authentication.
-Users can register and log in, and the server securely processes credentials using hashing and token-based authentication.
-The system follows a structured architecture with routes, controllers, and services to keep the code clean and scalable.
-It also uses environment variables for configuration and follows basic security practices.
+A scalable authentication system built using Node.js, Express, and MongoDB, implementing industry-standard security practices including JWT authentication, refresh token rotation, and protected route handling.
+
+Designed using clean architecture (Controller → Service → Model) to ensure maintainability and scalability.
 
 ---
 
-## 🚀 Features
+## 🚀 Live Demo
 
-* User Signup & Login
-* Password hashing using bcrypt
-* JWT-based authentication
-* Protected routes (coming soon)
-* Environment variable management
-* Structured backend architecture
+🔗 Backend API: https://auth-system-imze.onrender.com/
+🔗 Frontend: to be deployed
+
+---
+
+## ⚡ Features
+
+- Secure User Registration & Login
+- Password Hashing using bcrypt
+- JWT Access & Refresh Token Strategy
+- HTTP-only Cookie Authentication
+- Protected Routes with Middleware
+- Token Refresh Mechanism
+- Logout with Token Invalidation
+- Modular Architecture (MVC + Services)
+
+---
+
+## 🧠 Architecture
+
+Client → Routes → Middleware → Controller → Service → DB
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Backend:
-
-* Node.js
-* Express.js
-* MongoDB
-* Mongoose
-* CORS
-* dotenv
-* bcrypt
-* JSON Web Token (JWT)
-
-### Frontend:
-
-* React (planned / in progress)
+Node.js, Express.js, MongoDB, Mongoose, JWT, bcrypt, cookie-parser
 
 ---
 
-## 📁 Project Structure
+## 📦 API Endpoints
 
-```id="ybc4xm"
-auth-system/
- ├── client/          # Frontend (React)
- ├── server/          # Backend (Node + Express)
- │    ├── src/
- │    │    ├── config/
- │    │    ├── controllers/
- │    │    ├── services/
- │    │    ├── models/
- │    │    ├── routes/
- │    │    ├── middleware/
- │    │    └── utils/
- │    └── server.js
- ├── .env
- ├── .gitignore
- └── README.md
-```
+POST /api/auth/register  
+POST /api/auth/login  
+GET /api/auth/me  
+POST /api/auth/refresh-token  
+POST /api/auth/logout
 
 ---
 
-## ▶️ How to Run
+## 🔐 Security Practices
 
-### Backend
+- Password hashing (bcrypt)
+- JWT expiration strategy
+- Refresh token stored in DB
+- HTTP-only cookies
+- Input validation
 
-```bash id="e0bmdd"
+---
+
+## ⚙️ Setup
+
+```bash
+git clone https://github.com/danishshaikhdev/auth-system.git
 cd server
 npm install
 npm run dev
 ```
 
----
+## 🧪 Sample API Usage
 
-### Frontend
+### POST /api/auth/register
 
-```bash id="hw7w6f"
-cd client
-npm install
-npm start
+Request:
+
+```json
+curl -X POST https://auth-system-imze.onrender.com/api/auth/register \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "John Doe",
+  "email": "johndoe@gmail.com",
+  "password": "123456",
+  "confirm_password": "123456"
+}'
 ```
 
----
+Response:
 
-## 📌 Notes
+```json
+{
+  "success": true,
+  "message": "User registered successfully",
+  "user": {
+    "id": "69e0d417ba7250b4fa6bd350",
+    "name": "John Doe",
+    "email": "johndoe@gmail.com"
+  }
+}
+```
 
-* This is a learning project and is still in progress
-* More features like refresh tokens, role-based access, and OAuth will be added later
+### POST /api/auth/login
 
----
+Request:
 
-## 🎯 Future Improvements
+```json
+curl -X POST https://auth-system-imze.onrender.com/api/auth/login \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "johndoe@gmail.com",
+  "password": "123456"
+}'
+```
 
-* Refresh Tokens
-* Role-Based Authorization
-* Email Verification
-* Password Reset System
-* OAuth (Google, GitHub)
+Response:
+
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "refreshToken": "eyJhbGciOiJIU.....",
+    "accessToken": "eyJhbGciOiJIUzI.....",
+    "user": {
+      "id": "69e0d417ba7250b4fa6bd350",
+      "name": "John Doe",
+      "email": "johndoe@gmail.com"
+    }
+  }
+}
+```
+
+### GET /api/auth/me
+
+Request:
+
+```json
+curl -X GET https://auth-system-imze.onrender.com/api/auth/me \
+-H "Authorization: Bearer <accessToken_here>"
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "_id": "69e0d417ba7250b4fa6bd350",
+    "name": "John Doe",
+    "email": "johndoe@gmail.com",
+    "role": "user",
+    "createdAt": "2026-04-16T12:20:39.108Z",
+    "updatedAt": "2026-04-16T12:24:15.504Z",
+    "__v": 0,
+    "refreshToken": "eyJhbGciOiJIU....."
+  }
+}
+```
+
+### POST /api/auth/refresh-token
+
+Request:
+
+```json
+curl -X POST https://auth-system-imze.onrender.com/api/auth/refresh-token \
+--cookie "refreshToken=<refreshToken_here>"
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "accessToken": "eyJhbGciOiJI....."
+  }
+}
+```
+
+### POST /api/auth/logout
+
+Request:
+
+```json
+curl -X POST https://auth-system-imze.onrender.com/api/auth/logout 
+-H "Authorization: Bearer <accessToken_here>"
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "message": "Logged out successfully"
+}
+```
