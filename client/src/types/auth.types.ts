@@ -32,3 +32,12 @@ export interface ErrorResponse {
     success: boolean;
     message: string;
 }
+
+export type AuthContextType = {
+    user: User | null;
+    token: string | null;
+    loading: boolean;
+    login: (data: LoginRequest) => Promise<void>;
+    register: (data: RegiseterRequest) => Promise<void>;
+    logout: () => Promise<void>;
+};
