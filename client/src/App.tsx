@@ -1,15 +1,29 @@
-import { useState } from 'react'
 import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import type ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
 
   return (
-   <div>
-    <p>Hello World</p>
-    <p>Count: {count}</p>
-    <button onClick={() => setCount(count + 1)}>Click me</button>
-   </div>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/login' element={<Login />} />
+
+          {/* Protected Route */}
+          <Route
+            path='/dashboard'
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+        </Routes>
+      </BrowserRouter>
+    </div>
   )
 }
 

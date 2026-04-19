@@ -38,13 +38,9 @@ export const registerUser = async (data: RegiseterRequest) => {
 };
 
 // 👤 GET CURRENT USER
-export const getMe = async (token: string) => {
+export const getMe = async () => {
   try {
-    const response = await API.get("/api/auth/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await API.get("/api/auth/me");
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {

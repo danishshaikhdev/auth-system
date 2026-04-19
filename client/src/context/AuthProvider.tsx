@@ -19,8 +19,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setToken(resToken.data.accessToken);
 
                 // get the user data by the new token
-                const userData = await getMe(resToken.data.accessToken);
-                setUser(userData.data);
+                const userData = await getMe();
+                setUser(userData);
             } catch {
                 // if the token is not valid, set the user to null and the token to null
                 setUser(null);
@@ -35,13 +35,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // 🔐 LOGIN
     const login = async (data: LoginRequest) => {
+        setLoading(true);
         try {
             const res = await loginUser(data);
             setToken(res.data.accessToken);
             setUser(res.data.user);
-        } catch {
-            setUser(null);
-            setToken(null);
+        } finally {
+            setLoading(false);
         }
     };
 
