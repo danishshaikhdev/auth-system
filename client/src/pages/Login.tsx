@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 import { Error } from "../components/Error";
+import { getErrorMessage } from "../utils/error";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,22 +11,26 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDisabled(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setDisabled(true);
     setError("");
 
     try {
       await login(formData);
       navigate("/");
-    } catch (err) {
+      setDisabled(false);
+    } catch (error) {
       // 🚀 Gracefully show server error message
-      setError(err.message || "Login failed. Please try again.");
+      setError(getErrorMessage(error) || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -62,7 +67,7 @@ const Login = () => {
           />
 
           <button
-            disabled={loading}
+            disabled={loading || disabled}
             className="bg-blue-600 hover:bg-blue-700 p-3 rounded text-white font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? "Logging in..." : "Login"}

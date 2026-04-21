@@ -16,6 +16,7 @@ import type {
   AuthProviderProps,
 } from "../types/auth.types";
 import { AuthContext } from "./AuthContext";
+import { getErrorMessage } from "../utils/error";
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
@@ -80,9 +81,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(res.data.user);
       setToken(res.data.accessToken);
 
-    } catch (err) {
-      const message = err?.response?.data?.message || "Login failed";
-      throw new Error(message);
+    } catch (error) {
+      const message = getErrorMessage(error);
+      throw new Error(message || "Login failed");
     }
   };
 
@@ -93,9 +94,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (!res.success) {
         throw new Error(res.message || "Registration failed");
       }
-    } catch (err) {
-      const message = err?.response?.data?.message || "Registration failed";
-      throw new Error(message);
+    } catch (error) {
+      const message = getErrorMessage(error);
+      throw new Error(message || "Registration failed");
     }
   };
 

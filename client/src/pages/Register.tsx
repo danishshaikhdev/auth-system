@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 import { Error } from "../components/Error";
 import { Success } from "../components/Success";
+import { getErrorMessage } from "../utils/error";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -17,14 +18,17 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDisabled(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setDisabled(true);
     setError("");
     setSuccess("");
 
@@ -32,8 +36,9 @@ const Register = () => {
       await register(formData);
       setSuccess("Account created successfully!");
       setTimeout(() => navigate("/login"), 2000);
-    } catch (err) {
-      setError(err.message || "Registration failed");
+      setDisabled(false);
+    } catch (error) {
+      setError(getErrorMessage(error) || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -94,7 +99,7 @@ const Register = () => {
           />
 
           <button
-            disabled={loading}
+            disabled={loading || disabled}
             className="bg-green-600 hover:bg-green-700 p-3 rounded text-white font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? "Creating account..." : "Register"}

@@ -1,6 +1,7 @@
 import { useAuth } from "../context/useAuth";
 import { useNavigate } from "react-router-dom";
 import { User, LogOut, LayoutDashboard, Mail, ShieldCheck, Globe } from "lucide-react";
+import { getErrorMessage } from "../utils/error";
 
 const Dashboard = () => {
     const { user, logout } = useAuth();
@@ -10,8 +11,8 @@ const Dashboard = () => {
         try {
             await logout();
             navigate("/login");
-        } catch (err) {
-            console.error(err.message);
+        } catch (error) {
+            console.error(getErrorMessage(error) || "Logout failed");
         }
     };
 
