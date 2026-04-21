@@ -11,7 +11,7 @@ const app = express();
 
 // STEP 2: use middleware to handle cors and json parsing
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.ALLOWED_ORIGINS,
   credentials: true
 }));
 app.use(express.json());
