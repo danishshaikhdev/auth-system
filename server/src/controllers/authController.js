@@ -18,7 +18,6 @@ export const register = async (req, res) => {
     });
   } catch (err) {
     // send 400 status code (400 means bad request)
-    console.error(err.message);
     res.status(400).json({
       success: false,
       message: err.message,

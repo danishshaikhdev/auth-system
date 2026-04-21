@@ -2,76 +2,55 @@ import axios from "axios";
 import type {
   AuthResponse,
   LoginRequest,
-  RegiseterRequest,
+  RegisterRequest,
 } from "../types/auth.types";
 
-// Base URL from .env
+// STEP 1: Create axios instance with base configuration
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true, // important for cookies (refresh token)
+  withCredentials: true,
 });
+
+// STEP 2: Request Interceptor to attach accessToken
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
 // ➡️ LOGIN
 export const loginUser = async (data: LoginRequest) => {
-  try {
-    const response = await API.post<AuthResponse>("/api/auth/login", data);
-    return response.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      throw error.response?.data || { message: "Something went wrong" };
-    }
-    throw { message: "Something went wrong" };
-  }
+  const response = await API.post<AuthResponse>("/api/auth/login", data);
+  return response.data;
 };
 
 // ➡️ REGISTER
-export const registerUser = async (data: RegiseterRequest) => {
-  try {
-    const response = await API.post<AuthResponse>("/api/auth/register", data);
-    return response.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      throw error.response?.data || { message: "Something went wrong" };
-    }
-    throw { message: "Something went wrong" };
-  }
+export const registerUser = async (data: RegisterRequest) => {
+  const response = await API.post<AuthResponse>("/api/auth/register", data);
+  return response.data;
 };
 
 // 👤 GET CURRENT USER
 export const getMe = async () => {
-  try {
-    const response = await API.get("/api/auth/me");
-    return response.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      throw error.response?.data || { message: "Unauthorized" };
-    }
-    throw { message: "Unauthorized" };
-  }
+  const response = await API.get("/api/auth/me");
+  return response.data;
 };
 
 // 🔄 REFRESH TOKEN
 export const refreshToken = async () => {
-  try {
-    const response = await API.post("/api/auth/refresh-token");
-    return response.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      throw error.response?.data || { message: "Session expired" };
-    }
-    throw { message: "Session expired" };
-  }
+  const response = await API.post("/api/auth/refresh-token");
+  return response.data;
 };
 
 // ⬅️ LOGOUT
 export const logoutUser = async () => {
-  try {
-    const response = await API.post("/api/auth/logout");
-    return response.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      throw error.response?.data || { message: "Logout failed" };
-    }
-    throw { message: "Logout failed" };
-  }
+  const response = await API.post("/api/auth/logout");
+  return response.data;
 };
+
+export default API;

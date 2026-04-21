@@ -1,5 +1,5 @@
 export interface User {
-    id: number;
+    id: string;
     name: string;
     email: string;
 }
@@ -9,7 +9,7 @@ export interface LoginRequest {
     password: string;
 }
 
-export interface RegiseterRequest {
+export interface RegisterRequest {
     name: string;
     email: string;
     password: string;
@@ -38,6 +38,6 @@ export type AuthContextType = {
     token: string | null;
     loading: boolean;
     login: (data: LoginRequest) => Promise<void>;
-    register: (data: RegiseterRequest) => Promise<void>;
+    register: (data: RegisterRequest) => Promise<void>;
     logout: () => Promise<void>;
 };

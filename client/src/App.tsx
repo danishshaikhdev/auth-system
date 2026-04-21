@@ -1,19 +1,25 @@
-import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import type ProtectedRoute from './components/ProtectedRoute';
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import "./App.css";
+
+
 
 function App() {
-  // const [count, setCount] = useState(0);
-
   return (
-    <div>
+    <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path='/login' element={<Login />} />
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-          {/* Protected Route */}
+          {/* Protected Routes */}
           <Route
-            path='/dashboard'
+            path="/"
             element={
               <ProtectedRoute>
                 <Dashboard />
@@ -21,10 +27,12 @@ function App() {
             }
           />
 
+          {/* Catch-all */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
-    </div>
-  )
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
