@@ -1,34 +1,45 @@
-# 🔐 Production-Ready Authentication System
+# 🔐 Production-Ready Full-Stack Authentication System
 
-A scalable authentication system built using Node.js, Express, and MongoDB, implementing industry-standard security practices including JWT authentication, refresh token rotation, and protected route handling.
+A scalable, full-stack authentication system implementing industry-standard security practices. Features a robust Node.js backend and a modern React frontend with a polished UI.
 
-Designed using clean architecture (Controller → Service → Model) to ensure maintainability and scalability.
+Designed using **Clean Architecture** (Controller → Service → Model) on the backend and a **Modular Component-based** approach on the frontend to ensure maintainability and scalability.
 
 ---
 
 ## 🚀 Live Demo
 
-🔗 Backend API: https://auth-system-imze.onrender.com/
-🔗 Frontend: to be deployed
+🔗 **Backend API**: [https://auth-system-imze.onrender.com/](https://auth-system-imze.onrender.com/)  
+🔗 **Frontend**: *To be deployed*
 
 ---
 
 ## ⚡ Features
 
-- Secure User Registration & Login
-- Password Hashing using bcrypt
-- JWT Access & Refresh Token Strategy
-- HTTP-only Cookie Authentication
-- Protected Routes with Middleware
-- Token Refresh Mechanism
-- Logout with Token Invalidation
-- Modular Architecture (MVC + Services)
+### 🛡️ Backend (Node.js & Express)
+- **Secure Authentication**: Password hashing with `bcrypt` and JWT-based session management.
+- **Token Strategy**: Implementation of Access & Refresh Token rotation for enhanced security.
+- **Cookie Security**: Refresh tokens stored in `HTTP-only` cookies to prevent XSS attacks.
+- **Protected Routes**: Robust middleware for verifying authentication and authorization.
+- **Clean Architecture**: Separation of concerns using Controllers, Services, and Models.
+- **Error Handling**: Centralized and graceful error reporting.
+
+### 💻 Frontend (React & TypeScript)
+- **Modern UI/UX**: Built with **Vite**, **Tailwind CSS**, and **Lucide React** for a beautiful, responsive interface.
+- **Global State**: Minimalist and efficient state management using **React Context API**.
+- **Secure Routing**: Protected routes to prevent unauthorized access to the dashboard.
+- **Form Handling**: Integrated login and registration forms with real-time error feedback.
+- **Persistent Sessions**: Access tokens stored securely with automatic attachment to API requests via Axios interceptors.
+- **Dashboard**: A feature-rich user dashboard with a personalized navbar, hero section, and account details.
 
 ---
 
 ## 🧠 Architecture
 
-Client → Routes → Middleware → Controller → Service → DB
+**Full-Stack Flow**:  
+`React Frontend (Vite) <--> Axios Interceptors <--> Express API (Node.js) <--> MongoDB (Mongoose)`
+
+**Backend Internal**:  
+`Client → Routes → Middleware → Controller → Service → Model → DB`
 
 ![alt text](<System Architecture.png>)
 
@@ -36,162 +47,94 @@ Client → Routes → Middleware → Controller → Service → DB
 
 ## 🛠️ Tech Stack
 
-Node.js, Express.js, MongoDB, Mongoose, JWT, bcrypt, cookie-parser
+### Frontend
+- **Framework**: React 19 (TypeScript)
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Notifications**: React Hot Toast
+- **API Client**: Axios
+
+### Backend
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: MongoDB (Mongoose)
+- **Security**: JWT, bcrypt, cookie-parser
+- **Development**: Nodemon, Dotenv
+
+---
+
+## 📂 Project Structure
+
+```text
+auth-system/
+├── client/                # React TypeScript Frontend
+│   ├── src/
+│   │   ├── api/           # Axios API services
+│   │   ├── components/    # Reusable UI components
+│   │   ├── context/       # Auth Context & State
+│   │   ├── pages/         # Dashboard, Login, Register
+│   │   └── types/         # TypeScript definitions
+├── server/                # Node.js Express Backend
+│   ├── src/
+│   │   ├── config/        # DB & App config
+│   │   ├── controllers/   # Request handlers
+│   │   ├── middleware/    # Auth & Error middlewares
+│   │   ├── models/        # Mongoose schemas
+│   │   ├── routes/        # API endpoints
+│   │   ├── services/      # Business logic
+│   │   └── utils/         # Token & Helper functions
+```
 
 ---
 
 ## 📦 API Endpoints
 
-POST /api/auth/register  
-POST /api/auth/login  
-GET /api/auth/me  
-POST /api/auth/refresh-token  
-POST /api/auth/logout
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | Register a new user |
+| `POST` | `/api/auth/login` | Login and receive tokens |
+| `GET` | `/api/auth/me` | Get current user profile (Protected) |
+| `POST` | `/api/auth/refresh-token` | Rotate access tokens using cookies |
+| `POST` | `/api/auth/logout` | Invalidate session and clear cookies |
 
 ---
 
 ## 🔐 Security Practices
 
-- Password hashing (bcrypt)
-- JWT expiration strategy
-- Refresh token stored in DB
-- HTTP-only cookies
-- Input validation
+- **Bcrypt**: Salted password hashing.
+- **JWT Strategy**: Short-lived Access Tokens + Long-lived Refresh Tokens.
+- **Refresh Token Rotation**: New refresh token issued on every refresh request.
+- **XSS Protection**: Sensitive tokens stored in HTTP-only, Secure cookies.
+- **CSRF Mitigation**: Proper CORS configuration.
+- **Input Validation**: Server-side checks for all user-provided data.
 
 ---
 
 ## ⚙️ Setup
 
+### Prerequisites
+- Node.js installed
+- MongoDB URI (Local or Atlas)
+
+### 1. Clone & Install
 ```bash
 git clone https://github.com/danishshaikhdev/auth-system.git
+cd auth-system
+```
+
+### 2. Backend Setup
+```bash
 cd server
 npm install
+# Create a .env file with: PORT, MONGO_URI, JWT_SECRET, REFRESH_TOKEN_SECRET
 npm run dev
 ```
 
-## 🧪 Sample API Usage
-
-### POST /api/auth/register
-
-Request:
-
-```json
-curl -X POST https://auth-system-imze.onrender.com/api/auth/register \
--H "Content-Type: application/json" \
--d '{
-  "name": "John Doe",
-  "email": "johndoe@gmail.com",
-  "password": "123456",
-  "confirm_password": "123456"
-}'
-```
-
-Response:
-
-```json
-{
-  "success": true,
-  "message": "User registered successfully",
-  "user": {
-    "id": "69e0d417ba7250b4fa6bd350",
-    "name": "John Doe",
-    "email": "johndoe@gmail.com"
-  }
-}
-```
-
-### POST /api/auth/login
-
-Request:
-
-```json
-curl -X POST https://auth-system-imze.onrender.com/api/auth/login \
--H "Content-Type: application/json" \
--d '{
-  "email": "johndoe@gmail.com",
-  "password": "123456"
-}'
-```
-
-Response:
-
-```json
-{
-  "success": true,
-  "message": "Login successful",
-  "data": {
-    "refreshToken": "eyJhbGciOiJIU.....",
-    "accessToken": "eyJhbGciOiJIUzI.....",
-    "user": {
-      "id": "69e0d417ba7250b4fa6bd350",
-      "name": "John Doe",
-      "email": "johndoe@gmail.com"
-    }
-  }
-}
-```
-
-### GET /api/auth/me
-
-Request:
-
-```json
-curl -X GET https://auth-system-imze.onrender.com/api/auth/me \
--H "Authorization: Bearer <accessToken_here>"
-```
-
-Response:
-
-```json
-{
-  "success": true,
-  "data": {
-    "_id": "69e0d417ba7250b4fa6bd350",
-    "name": "John Doe",
-    "email": "johndoe@gmail.com",
-    "role": "user",
-    "createdAt": "2026-04-16T12:20:39.108Z",
-    "updatedAt": "2026-04-16T12:24:15.504Z",
-    "__v": 0,
-    "refreshToken": "eyJhbGciOiJIU....."
-  }
-}
-```
-
-### POST /api/auth/refresh-token
-
-Request:
-
-```json
-curl -X POST https://auth-system-imze.onrender.com/api/auth/refresh-token \
---cookie "refreshToken=<refreshToken_here>"
-```
-
-Response:
-
-```json
-{
-  "success": true,
-  "data": {
-    "accessToken": "eyJhbGciOiJI....."
-  }
-}
-```
-
-### POST /api/auth/logout
-
-Request:
-
-```json
-curl -X POST https://auth-system-imze.onrender.com/api/auth/logout 
--H "Authorization: Bearer <accessToken_here>"
-```
-
-Response:
-
-```json
-{
-  "success": true,
-  "message": "Logged out successfully"
-}
+### 3. Frontend Setup
+```bash
+cd client
+npm install
+# Create a .env file with: VITE_API_URL=http://localhost:5000
+npm run dev
 ```
