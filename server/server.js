@@ -11,7 +11,7 @@ const app = express();
 
 // STEP 2: use middleware to handle cors and json parsing
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS,
+  origin: "https://auth-system-h8so.vercel.app",
   credentials: true
 }));
 app.use(express.json());
