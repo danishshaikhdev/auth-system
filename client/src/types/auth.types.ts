@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface User {
     id: string;
     name: string;
@@ -20,6 +22,10 @@ type Data = {
     accessToken: string;
     refreshToken: string;
     user: User;
+}
+
+export type AuthProviderProps = {
+    children: ReactNode;
 }
 
 export interface AuthResponse {
