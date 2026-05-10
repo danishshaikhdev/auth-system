@@ -4,6 +4,7 @@ import { useAuth } from "../context/useAuth";
 import { Error } from "../components/Error";
 import { Success } from "../components/Success";
 import { getErrorMessage } from "../utils/error";
+import { LayoutDashboard } from "lucide-react";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -45,73 +46,244 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-gray-800 p-8 rounded-lg w-full max-w-md shadow-xl border border-gray-700">
-        <h2 className="text-white text-3xl font-bold mb-6 text-center">Register</h2>
+    <div className="relative min-h-screen overflow-hidden bg-[#f8fafc] flex items-center justify-center px-6 py-12">
 
-        {error && (
-          <Error message={error} />
-        )}
+      {/* Background Glow */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
 
-        {success && (
-          <Success message={success} />
-        )}
+        <div className="absolute -top-20 -left-20 w-72 h-72 rounded-full bg-blue-500/20 blur-3xl animate-pulse" />
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            name="name"
-            type="text"
-            required
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Full Name"
-            className="p-3 rounded bg-gray-700 text-white outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"
-          />
+        <div className="absolute -bottom-32 -right-32 w-72 h-72 rounded-full bg-purple-500/20 blur-3xl animate-pulse" />
 
-          <input
-            name="email"
-            type="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email Address"
-            className="p-3 rounded bg-gray-700 text-white outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"
-          />
+        <div className="absolute top-[40%] left-[50%] w-72 h-72 rounded-full bg-cyan-400/10 blur-3xl" />
+      </div>
 
-          <input
-            name="password"
-            type="password"
-            required
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-            className="p-3 rounded bg-gray-700 text-white outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"
-          />
+      {/* Main Card */}
+      <div className="relative w-full max-w-6xl grid lg:grid-cols-2 overflow-hidden rounded-[2.5rem] border border-white/20 bg-white/80 backdrop-blur-2xl shadow-2xl">
 
-          <input
-            name="confirm_password"
-            type="password"
-            required
-            value={formData.confirm_password}
-            onChange={handleChange}
-            placeholder="Confirm Password"
-            className="p-3 rounded bg-gray-700 text-white outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"
-          />
+        {/* Left Side */}
+        <div className="hidden lg:flex relative flex-col justify-between overflow-hidden bg-linear-to-br from-blue-600 via-purple-600 to-cyan-500 p-12 text-white">
 
-          <button
-            disabled={loading || disabled}
-            className="bg-green-600 hover:bg-green-700 p-3 rounded text-white font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          >
-            {loading ? "Creating account..." : "Register"}
-          </button>
-        </form>
+          {/* Glow */}
+          <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-white/10 blur-3xl" />
 
-        <p className="text-gray-400 mt-6 text-center text-sm">
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue-400 hover:underline">
-            Login here
-          </Link>
-        </p>
+          <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-white/10 blur-3xl" />
+
+          {/* Top Content */}
+          <div className="relative z-10">
+
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-2 rounded-full backdrop-blur-md">
+              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+
+              <span className="text-sm font-semibold">
+                Create Secure Account
+              </span>
+            </div>
+
+            <h1 className="mt-8 text-6xl font-black leading-tight">
+              Join
+              <br />
+              Us
+            </h1>
+
+            <p className="mt-6 text-lg text-white/80 leading-relaxed max-w-md">
+              Create your account and unlock a beautiful personalized dashboard experience with secure authentication.
+            </p>
+          </div>
+
+          {/* Bottom Stats */}
+          <div className="relative z-10 grid grid-cols-3 gap-4">
+
+            <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-4">
+              <h2 className="text-3xl font-black">
+                Fast
+              </h2>
+
+              <p className="text-sm text-white/70 mt-1">
+                Signup
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-4">
+              <h2 className="text-3xl font-black">
+                Secure
+              </h2>
+
+              <p className="text-sm text-white/70 mt-1">
+                Access
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-4">
+              <h2 className="text-3xl font-black">
+                Smart
+              </h2>
+
+              <p className="text-sm text-white/70 mt-1">
+                Dashboard
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Right Side */}
+        <div className="p-8 md:p-12">
+
+          {/* Mobile Header */}
+          <div className="lg:hidden mb-10 text-center">
+
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-linear-to-br from-blue-500 to-purple-600 shadow-xl">
+              <LayoutDashboard className="w-10 h-10 text-white" />
+            </div>
+
+            <h2 className="mt-6 text-4xl font-black text-gray-800">
+              Create Account
+            </h2>
+
+            <p className="mt-3 text-gray-500">
+              Start your journey with us today.
+            </p>
+          </div>
+
+          {/* Desktop Header */}
+          <div className="hidden lg:block">
+
+            <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 px-4 py-2 rounded-full">
+              <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+
+              <span className="text-sm font-semibold text-blue-600">
+                Create your account
+              </span>
+            </div>
+
+            <h2 className="mt-6 text-5xl font-black text-gray-800">
+              Sign Up
+            </h2>
+
+            <p className="mt-3 text-gray-500 text-lg">
+              Enter your details and get started instantly.
+            </p>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div className="mt-6">
+              <Error message={error} />
+            </div>
+          )}
+
+          {/* Success */}
+          {success && (
+            <div className="mt-6">
+              <Success message={success} />
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="mt-10 flex flex-col gap-6">
+
+            {/* Full Name */}
+            <div>
+
+              <label className="text-sm font-bold text-gray-700 mb-3 block">
+                Full Name
+              </label>
+
+              <input
+                name="name"
+                type="text"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-gray-800 outline-none transition-all duration-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              />
+            </div>
+
+            {/* Email */}
+            <div>
+
+              <label className="text-sm font-bold text-gray-700 mb-3 block">
+                Email Address
+              </label>
+
+              <input
+                name="email"
+                type="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-gray-800 outline-none transition-all duration-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              />
+            </div>
+
+            {/* Password */}
+            <div>
+
+              <label className="text-sm font-bold text-gray-700 mb-3 block">
+                Password
+              </label>
+
+              <input
+                name="password"
+                type="password"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-gray-800 outline-none transition-all duration-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              />
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+
+              <label className="text-sm font-bold text-gray-700 mb-3 block">
+                Confirm Password
+              </label>
+
+              <input
+                name="confirm_password"
+                type="password"
+                required
+                value={formData.confirm_password}
+                onChange={handleChange}
+                placeholder="Confirm your password"
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-gray-800 outline-none transition-all duration-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              />
+            </div>
+
+            {/* Submit */}
+            <button
+              disabled={loading || disabled}
+              className="group relative overflow-hidden rounded-2xl bg-linear-to-r from-blue-500 via-purple-500 to-cyan-500 px-6 py-4 text-lg font-bold text-white shadow-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-blue-500/30 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            >
+
+              {/* Shine */}
+              <div className="absolute top-0 -left-full h-full w-full bg-linear-to-r from-transparent via-white/30 to-transparent skew-x-12 group-hover:left-[200%] transition-all duration-1000" />
+
+              <span className="relative z-10">
+                {loading ? "Creating account..." : "Create Account"}
+              </span>
+            </button>
+
+          </form>
+
+          {/* Bottom */}
+          <p className="mt-10 text-center text-gray-500">
+            Already have an account?{" "}
+
+            <Link
+              to="/login"
+              className="font-bold text-blue-500 hover:text-purple-500 transition-all"
+            >
+              Login here
+            </Link>
+          </p>
+
+        </div>
       </div>
     </div>
   );

@@ -1,10 +1,14 @@
 import { useAuth } from "../context/useAuth";
 import { useNavigate } from "react-router-dom";
-import { User, LogOut, LayoutDashboard, Mail, ShieldCheck, Globe } from "lucide-react";
+import { User, LogOut, LayoutDashboard, Mail, ShieldCheck, Globe, TriangleAlert, X } from "lucide-react";
 import { getErrorMessage } from "../utils/error";
+import { Cards } from "../components/Cards";
+import { QuickAccess } from "../components/QuickAccess";
+import { useState } from "react";
 
 const Dashboard = () => {
     const { user, logout } = useAuth();
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -17,31 +21,42 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+        <div className="min-h-screen bg-white text-gray-800 flex flex-col">
             {/* Navbar */}
-            <nav className="sticky top-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-800 px-6 py-4">
+            <nav className="sticky top-0 z-50 bg-white backdrop-blur-md border-b border-gray-200 shadow-md px-6 py-4">
                 <div className="max-w-7xl mx-auto flex justify-between items-center">
                     <div className="flex items-center gap-2">
                         <div className="bg-blue-500 p-2 rounded-lg">
-                            <LayoutDashboard className="w-5 h-5 text-white" />
+                            <LayoutDashboard className="w-5 h-5 text-white shadow-md" />
                         </div>
                         <span className="text-xl font-bold tracking-tight">AuthSystem</span>
                     </div>
 
                     <div className="flex items-center gap-6">
-                        <div className="hidden md:flex items-center gap-3 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
-                            <div className="bg-linear-to-tr from-blue-500 to-purple-500 p-1 rounded-full">
+                        <div className="hidden md:flex items-center gap-3 bg-white/80 border border-gray-200 px-4 py-2 rounded-full shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group">
+                            <div className="bg-linear-to-tr from-blue-500 to-purple-600 p-2 rounded-full group-hover:scale-110 transition">
                                 <User className="w-4 h-4 text-white" />
                             </div>
-                            <span className="text-sm font-medium text-gray-200">{user?.name}</span>
+
+                            <div className="leading-tight">
+                                <p className="text-sm font-semibold text-gray-800">
+                                    {user?.name}
+                                </p>
+
+                                <p className="text-xs text-gray-500">
+                                    Verified User
+                                </p>
+                            </div>
                         </div>
 
                         <button
-                            onClick={handleLogout}
-                            className="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-lg transition-all border border-red-500/20 active:scale-95 text-sm font-semibold cursor-pointer"
+                            onClick={() => setShowLogoutModal(true)}
+                            className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-2xl shadow-lg hover:shadow-red-500/30 hover:scale-105 active:scale-95 transition-all duration-300 font-semibold cursor-pointer
+                            "
                         >
                             <LogOut className="w-4 h-4" />
-                            <span>Logout</span>
+
+                            Logout
                         </button>
                     </div>
                 </div>
@@ -65,25 +80,35 @@ const Dashboard = () => {
 
                 {/* User Details Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-1 gap-6 max-w-4xl mx-auto">
-                    <div className="bg-gray-800/40 p-6 rounded-2xl border border-gray-700 hover:border-blue-500/50 transition-colors group">
+                    <div className="bg-white p-6 rounded-2xl border border-gray-200 hover:border-blue-500/50 transition-colors group">
                         <div className="flex items-center gap-4 mb-4">
-                            <div className="p-3 bg-blue-500/10 rounded-xl group-hover:bg-blue-500/20 transition-colors">
-                                <Mail className="w-6 h-6 text-blue-400" />
+                            <div className="p-3 bg-blue-500 rounded-xl group-hover:bg-blue-600 transition-colors">
+                                <Mail className="w-6 h-6 text-white shadow-md" />
                             </div>
                             <div>
                                 <p className="text-gray-500 text-xs uppercase tracking-widest font-bold">Email Address</p>
-                                <p className="text-lg font-medium text-gray-100">{user?.email}</p>
+                                <p className="text-lg font-medium text-gray-800">{user?.email}</p>
                             </div>
                         </div>
-                        <div className="h-1 w-full bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
                             <div className="h-full w-3/4 bg-blue-500 rounded-full" />
                         </div>
                     </div>
                 </div>
+
+                <div className="mt-8">
+                    <Cards />
+                </div>
+
+                <div className="mt-8">
+                    <QuickAccess />
+                </div>
+
+
             </main>
 
             {/* Footer */}
-            <footer className="bg-gray-900 border-t border-gray-800 py-12 px-6">
+            <footer className="bg-gray-50 border-t border-gray-200 py-12 px-6">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
                     <div className="flex flex-col items-center md:items-start gap-2">
                         <div className="flex items-center gap-2">
@@ -96,16 +121,69 @@ const Dashboard = () => {
                     <div className="flex gap-6">
                         {/* <a href="#" className="text-gray-400 hover:text-white transition-colors"><Github className="w-5 h-5" /></a> */}
                         {/* <a href="#" className="text-gray-400 hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a> */}
-                        <a href="#" className="text-gray-400 hover:text-white transition-colors"><Globe className="w-5 h-5" /></a>
+                        <a href="/" className="text-gray-400 hover:text-gray-500 transition-colors"><Globe className="w-5 h-5 text-gray-500" /></a>
                     </div>
 
                     <div className="flex gap-8 text-sm font-medium text-gray-400">
-                        <a href="#" className="hover:text-white transition-colors">Privacy</a>
-                        <a href="#" className="hover:text-white transition-colors">Terms</a>
-                        <a href="#" className="hover:text-white transition-colors">Help</a>
+                        <a href="#" className="hover:text-gray-500 transition-colors">Privacy</a>
+                        <a href="#" className="hover:text-gray-500 transition-colors">Terms</a>
+                        <a href="#" className="hover:text-gray-500 transition-colors">Help</a>
                     </div>
                 </div>
             </footer>
+
+            {/* Logout Modal */}
+            {showLogoutModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4 animate-in fade-in duration-300">
+
+                    {/* Modal */}
+                    <div className="relative w-full max-w-md overflow-hidden rounded-4xl bg-white border border-gray-200 shadow-2xl p-8 animate-in zoom-in-95 duration-300">
+
+                        {/* Close */}
+                        <button
+                            onClick={() => setShowLogoutModal(false)}
+                            className="absolute top-5 right-5 p-2 rounded-full hover:bg-gray-100 transition cursor-pointer">
+                            <X className="w-5 h-5 text-gray-500" />
+                        </button>
+
+                        {/* Icon */}
+                        <div className="mx-auto w-fit bg-red-100 p-5 rounded-3xl mb-6">
+                            <TriangleAlert className="w-10 h-10 text-red-500" />
+                        </div>
+
+                        {/* Text */}
+                        <div className="text-center">
+
+                            <h2 className="text-3xl font-black text-gray-800">
+                                Logout?
+                            </h2>
+
+                            <p className="mt-4 text-gray-500 leading-relaxed">
+                                Are you sure you want to logout from your account?
+                                You'll need to login again to continue.
+                            </p>
+                        </div>
+
+                        {/* Buttons */}
+                        <div className=" mt-8 grid grid-cols-2 gap-4">
+
+                            <button
+                                onClick={() => setShowLogoutModal(false)}
+                                className="py-4 rounded-2xl border border-gray-200 font-semibold hover:bg-gray-50 transition-all cursor-pointer">
+                                Cancel
+                            </button>
+
+                            <button
+                                onClick={handleLogout}
+                                className="py-4 rounded-2xl bg-red-500 hover:bg-red-600 text-white font-semibold shadow-lg hover:shadow-red-500/30 transition-all cursor-pointer">
+                                Logout
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
